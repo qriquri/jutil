@@ -23,6 +23,46 @@ public class HttpWrapper {
     }
 
     /**
+     * ファイル転送
+     * @param filename
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    final public static String uploadFile(String filename, String url) throws IOException {
+        HttpURLConnection con = null;
+        FileInputStream file = null;
+        InputStream inputStream = null;
+        String response = "{\"success\": false}";
+        try {
+            // <httpリクエスト設定>
+            con = (HttpURLConnection) new URL(url).openConnection();
+            con.setDoOutput(true);
+            con.setRequestMethod("POST");
+            sendFileHttp(con, filename, file);
+            // </httpリクエスト設定>
+            if (con.getResponseCode() == 200) {
+            	inputStream = con.getInputStream();
+                response = readFromStream(inputStream);
+            }
+
+        } catch (Exception e) {
+            Logger.error(LOG_TAG, "uploadFile" + e.toString());
+        } finally {
+            if (con != null) {
+            con.disconnect();
+            }
+            if(file != null){
+                file.close();
+            }
+            if(inputStream != null) {
+            	inputStream.close();
+            }
+        }
+        return response;
+    }
+
+    /**
      * JSON形式で送信したいときに使う
      * 
      * @param body
@@ -136,7 +176,7 @@ public class HttpWrapper {
      * @return
      * @throws IOException
      */
-    final private static byte[] createGetReqByByte(String url) throws IOException {
+    final public static byte[] createGetReqByByte(String url) throws IOException {
         HttpURLConnection con = null;
         InputStream inputStream = null;
         byte[] response = null;
@@ -215,7 +255,7 @@ public class HttpWrapper {
      * @param file
      * @throws IOException
      */
-    final private static void sendFileHttp(HttpURLConnection con, String filename, FileInputStream file)
+    final public static void sendFileHttp(HttpURLConnection con, String filename, FileInputStream file)
             throws IOException {
         // <httpリクエスト設定>
         final String boundary = UUID.randomUUID().toString();
