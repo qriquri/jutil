@@ -4,5 +4,11 @@
 ## Getting Started
 copy `jutil.jar` to your `lib` folder
 
-## Docs
+## Create Jar
+```
+cd ./bin
+jar -cvf ../jutil.jar ./com
+```
 
+## Docs
+[Reference](./docs/References.md)
