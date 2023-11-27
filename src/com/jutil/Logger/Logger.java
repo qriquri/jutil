@@ -16,6 +16,7 @@ public class Logger {
         System.out.print("info");
         System.out.print("]");
         print(items);
+        System.out.println("");
     }
 
     /**
@@ -33,6 +34,7 @@ public class Logger {
         System.out.print("error");
         System.out.print("]");
         print(items);
+        System.out.println("");
     }
     
     @SuppressWarnings("unchecked")
