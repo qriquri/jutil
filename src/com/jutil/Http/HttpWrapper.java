@@ -11,7 +11,9 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+
 import org.apache.commons.io.IOUtils;
+
 import com.jutil.Logger.Logger;
 
 public class HttpWrapper {
@@ -64,7 +66,7 @@ public class HttpWrapper {
 
     /**
      * JSON形式で送信したいときに使う
-     * 
+     *
      * @param body
      * @param url
      * @return
@@ -104,7 +106,7 @@ public class HttpWrapper {
 
     /**
      * GETリクエストを送り、レスポンスを得る
-     * 
+     *
      * @param url
      * @return
      * @throws IOException
@@ -139,11 +141,11 @@ public class HttpWrapper {
 
     /*
      * GETリクエストを送り、レスポンスを得る
-     * 
+     *
      * @param url
-     * 
+     *
      * @return
-     * 
+     *
      * @throws IOException
      */
     final public static InputStream createGetReqStream(String url) throws IOException {
@@ -170,8 +172,44 @@ public class HttpWrapper {
     }
 
     /**
+     * JSON形式で送信したいときに使う
+     *
+     * @param body
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    final public static InputStream sendJSONStream(String body, String url) throws IOException {
+        HttpURLConnection con = null;
+        InputStream inputStream = null;
+        con = (HttpURLConnection) new URL(url).openConnection();
+        con.setDoOutput(true);
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setReadTimeout(1000000);
+        con.setConnectTimeout(1500000);
+        try {
+            OutputStream out = con.getOutputStream();
+            out.write((body)
+                    .getBytes(StandardCharsets.UTF_8));
+
+            out.flush();
+
+            if (con.getResponseCode() == 200) {
+                inputStream = con.getInputStream();
+                Logger.info(LOG_TAG, "create connection!");
+                return inputStream;
+            }
+        } catch (Exception e) {
+            Logger.error(LOG_TAG, "sendJson" + e.toString());
+        } finally {
+        }
+        return inputStream;
+    }
+
+    /**
      * GETリクエストを送り、レスポンスを得る
-     * 
+     *
      * @param url
      * @return
      * @throws IOException
@@ -206,7 +244,7 @@ public class HttpWrapper {
 
     /**
      * httpリクエストの返信を読み取る
-     * 
+     *
      * @param inputStream
      * @return
      * @throws IOException
@@ -233,7 +271,7 @@ public class HttpWrapper {
 
     /**
      * httpリクエストの返信を読み取る
-     * 
+     *
      * @param inputStream
      * @return
      * @throws IOException
@@ -249,7 +287,7 @@ public class HttpWrapper {
 
     /**
      * httpリクエストでファイルを送り付ける
-     * 
+     *
      * @param con
      * @param filename
      * @param file
