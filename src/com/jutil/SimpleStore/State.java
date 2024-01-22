@@ -5,4 +5,5 @@ package com.jutil.SimpleStore;
  *
  */
 abstract public class State {
+    public abstract <T> void dispatch(Enum<?> action, T val);
 }
