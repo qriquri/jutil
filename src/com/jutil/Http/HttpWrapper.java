@@ -148,7 +148,7 @@ public class HttpWrapper {
      *
      * @throws IOException
      */
-    final public static InputStream createGetReqStream(String url) throws IOException {
+    final public static InputStream createGetReqGetStream(String url) throws IOException {
         HttpURLConnection con = null;
         InputStream inputStream = null;
         try {
@@ -179,7 +179,7 @@ public class HttpWrapper {
      * @return
      * @throws IOException
      */
-    final public static InputStream sendJSONStream(String body, String url) throws IOException {
+    final public static InputStream sendJSONGetStream(String body, String url) throws IOException {
         HttpURLConnection con = null;
         InputStream inputStream = null;
         con = (HttpURLConnection) new URL(url).openConnection();
