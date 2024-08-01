@@ -10,12 +10,12 @@ import java.util.Optional;
  */
 final public class Store {
 	private static final String TAG = Store.class.getName();
-    private static Map<Class<? extends State>, State> stateMap = new HashMap<>();
+    private static Map<Class<? extends Object>, Object> stateMap = new HashMap<>();
 	/**
 	 * ステートを束ねる
 	 * @param stateList
 	 */
-	final public static void bind(ArrayList<State> stateList) {
+	final public static void bind(ArrayList<Object> stateList) {
     	for (int i = 0; i < stateList.size(); i++) {
     		stateMap.put(stateList.get(i).getClass(), stateList.get(i));
     	}
@@ -31,9 +31,9 @@ final public class Store {
      * @return ステート
      */
     @SuppressWarnings("unchecked")
-	final public static <T extends State> T getState(Class<T> klass){
+	final public static <T extends Object> T getState(Class<T> klass){
     	// null だったら例外を出す
-    	Optional<State> stateOpt = Optional.of(stateMap.get(klass));
+    	Optional<Object> stateOpt = Optional.of(stateMap.get(klass));
         return (T) stateOpt.get();
     }
 }
